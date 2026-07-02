@@ -111,13 +111,24 @@ export function CreateClusterPage({ onCancel }: CreateClusterPageProps) {
   };
 
   const handleAddSearchNodes = () => {
+    // The Workload Isolation accordion is nested inside the Cloud Provider /
+    // Region section, so that outer accordion must be open for workloadRef to
+    // be mounted and scrollable.
+    setProviderRegionOpen(true);
     setWorkloadOpen(true);
-    setTimeout(() => {
+    // Retry the scroll a few times: when the outer accordion was collapsed the
+    // workload content mounts fresh, so the ref may not be available on the
+    // first tick.
+    let attempts = 0;
+    const tryScroll = () => {
       if (workloadRef.current) {
         const top = workloadRef.current.getBoundingClientRect().top + window.scrollY - 200;
         window.scrollTo({ top, behavior: "smooth" });
+      } else if (attempts++ < 10) {
+        setTimeout(tryScroll, 50);
       }
-    }, 200);
+    };
+    setTimeout(tryScroll, 100);
   };
 
   // ── Computed ──────────────────────────────────────────────────────────────

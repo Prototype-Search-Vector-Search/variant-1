@@ -65,7 +65,7 @@ export function SearchTierEmptyState({ onAddSearchNodes }: SearchTierEmptyStateP
 
       <div className="searchTierEmptyState-cta">
         {/* @ts-ignore - React 19 polymorphic type mismatch */}
-        <Button variant="baseGreen" size="large" onClick={onAddSearchNodes} className="searchTierEmptyState-ctaButton">
+        <Button variant="primary" size="large" onClick={onAddSearchNodes} className="searchTierEmptyState-ctaButton">
           Add Search Nodes
         </Button>
         {/* @ts-ignore - React 19 polymorphic type mismatch */}

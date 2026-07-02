@@ -4,6 +4,7 @@ import { nodePolyfills } from 'vite-plugin-node-polyfills'
 import path from 'path'
 
 export default defineConfig({
+  base: '/claude-code-search-nodes/',
   plugins: [react(), nodePolyfills()],
   resolve: {
     dedupe: ['react', 'react-dom'],

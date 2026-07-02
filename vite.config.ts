@@ -4,7 +4,10 @@ import { nodePolyfills } from 'vite-plugin-node-polyfills'
 import path from 'path'
 
 export default defineConfig({
-  base: '/claude-code-search-nodes/',
+  // Pages serves project sites at /<repo-name>/. The deploy workflow sets
+  // VITE_BASE from the repo name so each variant builds with correct asset
+  // URLs without any committed difference.
+  base: process.env.VITE_BASE ?? '/claude-code-search-nodes/',
   plugins: [react(), nodePolyfills()],
   resolve: {
     dedupe: ['react', 'react-dom'],

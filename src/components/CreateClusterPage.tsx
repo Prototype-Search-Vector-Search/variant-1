@@ -29,6 +29,12 @@ import "./CreateClusterPage.css";
 let nextId = 1;
 const uid = () => String(nextId++);
 
+// Title of the provider/region section. Overridable per-deployment via the
+// VITE_SECTION_TITLE build-time env var so repo variants can differ without
+// changing source. Defaults to the original title.
+const PROVIDER_SECTION_TITLE =
+  import.meta.env.VITE_SECTION_TITLE || "Cloud Provider, Region, & Workload Isolation";
+
 const CLUSTER_TYPES: ClusterType[] = ["flex", "dedicated", "free"];
 
 const CLUSTER_INFO: Record<ClusterType, { desc: string; detail: string }> = {
@@ -277,7 +283,7 @@ export function CreateClusterPage({ onCancel }: CreateClusterPageProps) {
 
         {/* Cloud Provider, Region & Workload Isolation */}
         <SectionRow
-          title="Cloud Provider, Region, & Workload Isolation"
+          title={PROVIDER_SECTION_TITLE}
           meta={<span className="createClusterPage-providerHeaderRegion">{displayRegion}</span>}
           open={providerRegionOpen}
           onToggle={() => setProviderRegionOpen((v) => !v)}

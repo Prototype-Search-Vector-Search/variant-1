@@ -33,6 +33,13 @@ jobs:
 
       - name: Build
         run: npm run build
+        env:
+          # Base path is derived from the repo name so each variant serves
+          # correctly under /<repo-name>/ on GitHub Pages.
+          VITE_BASE: /${{ github.event.repository.name }}/
+          # Optional per-repo title override (set as an Actions repo variable).
+          # Empty on the original repo, so it falls back to the default title.
+          VITE_SECTION_TITLE: ${{ vars.SECTION_TITLE }}
 
       - name: Setup Pages
         uses: actions/configure-pages@v5

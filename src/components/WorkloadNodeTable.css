@@ -85,3 +85,10 @@
   font-size: 13px;
   color: #5c6c75;
 }
+
+/* Search table variant: no Action column, so drop the trailing 56px track.
+   Placed last so it overrides the 4-column base rules above. */
+.workloadNodeTable-header--noAction,
+.workloadNodeTable-row--noAction {
+  grid-template-columns: 140px 1fr 80px;
+}

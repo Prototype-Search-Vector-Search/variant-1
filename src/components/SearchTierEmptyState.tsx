@@ -42,7 +42,7 @@ export function SearchTierEmptyState({ onAddSearchNodes }: SearchTierEmptyStateP
           {WITHOUT_ITEMS.map((text) => (
             <div key={text} className="searchTierEmptyState-item">
               {/* @ts-ignore - React 19 polymorphic type mismatch */}
-              <Icon glyph="X" fill={palette.gray.dark1} size={24} />
+              <Icon glyph="ThumbsDown" fill={palette.gray.dark1} size={24} />
               {/* @ts-ignore - React 19 polymorphic type mismatch */}
               <Body className="searchTierEmptyState-itemText">{text}</Body>
             </div>
@@ -55,7 +55,7 @@ export function SearchTierEmptyState({ onAddSearchNodes }: SearchTierEmptyStateP
           {WITH_ITEMS.map((text) => (
             <div key={text} className="searchTierEmptyState-item">
               {/* @ts-ignore - React 19 polymorphic type mismatch */}
-              <Icon glyph="Checkmark" fill={palette.green.dark1} size={24} />
+              <Icon glyph="ThumbsUp" fill={palette.green.dark1} size={24} />
               {/* @ts-ignore - React 19 polymorphic type mismatch */}
               <Body className="searchTierEmptyState-itemText">{text}</Body>
             </div>
@@ -65,7 +65,7 @@ export function SearchTierEmptyState({ onAddSearchNodes }: SearchTierEmptyStateP
 
       <div className="searchTierEmptyState-cta">
         {/* @ts-ignore - React 19 polymorphic type mismatch */}
-        <Button variant="primary" size="large" onClick={onAddSearchNodes} className="searchTierEmptyState-ctaButton">
+        <Button variant="default" size="large" onClick={onAddSearchNodes} className="searchTierEmptyState-ctaButton">
           Add Search Nodes
         </Button>
         {/* @ts-ignore - React 19 polymorphic type mismatch */}

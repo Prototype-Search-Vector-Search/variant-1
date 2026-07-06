@@ -42,7 +42,7 @@ export function ElectableNodesTable({ rows, onChangeNodes, onAdd, onRemove }: El
       </Body>
       <div className="electableNodesTable-recommendedRow">
         {/* @ts-ignore - React 19 polymorphic type mismatch */}
-        <Icon glyph="Sparkle" size={12} fill={palette.black} />
+        <Icon glyph="Favorite" size={12} fill={palette.black} />
         <span className="electableNodesTable-recommendedText">Recommended region</span>
         {/* @ts-ignore - React 19 polymorphic type mismatch */}
         <Icon glyph="InfoWithCircle" size={12} fill={palette.gray.base} />

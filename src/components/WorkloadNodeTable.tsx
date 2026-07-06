@@ -19,6 +19,8 @@ export interface WorkloadNodeTableProps {
   warningText?: string;
   onTierLink?: () => void;
   workloadWord?: string;
+  hideActions?: boolean;
+  removeLink?: { label: string; onClick: () => void };
 }
 
 export function WorkloadNodeTable({
@@ -33,6 +35,8 @@ export function WorkloadNodeTable({
   warningText,
   onTierLink,
   workloadWord,
+  hideActions = false,
+  removeLink,
 }: WorkloadNodeTableProps) {
   const showTierBanner = onTierLink && rows.length > 0;
 
@@ -59,15 +63,15 @@ export function WorkloadNodeTable({
           {warningText}
         </Banner>
       )}
-      <div className="workloadNodeTable-header">
+      <div className={`workloadNodeTable-header${hideActions ? " workloadNodeTable-header--noAction" : ""}`}>
         <span>Provider</span>
         <span>Region</span>
         <span className="workloadNodeTable-right">Nodes</span>
-        <span className="workloadNodeTable-right">Action</span>
+        {!hideActions && <span className="workloadNodeTable-right">Action</span>}
       </div>
       {rows.length > 0 &&
         rows.map((row) => (
-          <div key={row.id} className="workloadNodeTable-row">
+          <div key={row.id} className={`workloadNodeTable-row${hideActions ? " workloadNodeTable-row--noAction" : ""}`}>
             <span className="workloadNodeTable-provider">{PROVIDER_NAMES[row.provider as CloudProvider]}</span>
             <RegionDisplay code={row.region} />
             <div className="workloadNodeTable-right">
@@ -81,22 +85,33 @@ export function WorkloadNodeTable({
                 className="workloadNodeTable-nodesInput"
               />
             </div>
-            <div className="workloadNodeTable-right">
-              {/* @ts-ignore - React 19 polymorphic type mismatch */}
-              <Button size="xsmall" aria-label="Remove row" onClick={() => onRemove(row.id)}>
+            {!hideActions && (
+              <div className="workloadNodeTable-right">
                 {/* @ts-ignore - React 19 polymorphic type mismatch */}
-                <Icon glyph="Trash" />
-              </Button>
-            </div>
+                <Button size="xsmall" aria-label="Remove row" onClick={() => onRemove(row.id)}>
+                  {/* @ts-ignore - React 19 polymorphic type mismatch */}
+                  <Icon glyph="Trash" />
+                </Button>
+              </div>
+            )}
           </div>
         ))}
-      {!warningText && (
+      {removeLink && rows.length > 0 ? (
         <div className="workloadNodeTable-addRow">
           {/* @ts-ignore - React 19 polymorphic type mismatch */}
-          <Link as="button" onClick={onAdd} hideExternalIcon>
-            {addLabel}
+          <Link as="button" onClick={removeLink.onClick} hideExternalIcon>
+            {removeLink.label}
           </Link>
         </div>
+      ) : (
+        !warningText && (
+          <div className="workloadNodeTable-addRow">
+            {/* @ts-ignore - React 19 polymorphic type mismatch */}
+            <Link as="button" onClick={onAdd} hideExternalIcon>
+              {addLabel}
+            </Link>
+          </div>
+        )
       )}
       <div className="workloadNodeTable-total">
         Total: {total} {label} Nodes

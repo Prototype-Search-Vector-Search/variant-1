@@ -19,7 +19,7 @@ export function RegionDisplay({ code }: RegionDisplayProps) {
       <span className="regionDisplay-code">({r.code})</span>
       {r.recommended && (
         // @ts-ignore - React 19 polymorphic type mismatch
-        <Icon glyph="Sparkle" size={12} fill={palette.black} />
+        <Icon glyph="Favorite" size={12} fill={palette.black} />
       )}
     </span>
   );

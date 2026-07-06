@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { CreateClusterPage } from './components/CreateClusterPage'
 import { ProjectOverviewPage } from './components/ProjectOverviewPage'
 import { ProjectSettingsPage } from './components/ProjectSettingsPage'
@@ -38,20 +38,65 @@ type View =
   | 'org-settings'
   | 'cluster-metrics'
 
+// Every view id is a valid ?view= value. A few external entry points (account
+// tab, "All Clusters" in the account menu) use friendlier aliases, mapped here.
+const VIEW_ALIASES: Record<string, View> = {
+  account: 'account-profile',
+}
+
+const ALL_VIEWS: View[] = [
+  'create-cluster',
+  'project-overview',
+  'project-settings',
+  'clusters',
+  'cluster-overview',
+  'search-indexes',
+  'index-overview',
+  'status-details',
+  'search-tester',
+  'auto-embedding-usage',
+  'auto-embedding-rate-limits',
+  'reranking-usage',
+  'reranking-rate-limits',
+  'account-profile',
+  'all-projects',
+  'organizations',
+  'org-settings',
+  'cluster-metrics',
+]
+
+function viewFromLocation(): View {
+  const param = new URLSearchParams(window.location.search).get('view')
+  if (!param) return 'project-overview'
+  if (VIEW_ALIASES[param]) return VIEW_ALIASES[param]
+  if ((ALL_VIEWS as string[]).includes(param)) return param as View
+  return 'project-overview'
+}
+
 function App() {
-  // Some entry points (account tab, "All Clusters" in the account menu) link via
-  // a ?view= param, so honor that on load.
-  const viewParam = new URLSearchParams(window.location.search).get('view')
-  const VIEW_PARAM_MAP: Record<string, View> = {
-    account: 'account-profile',
-    clusters: 'clusters',
-    'cluster-overview': 'cluster-overview',
-    'all-projects': 'all-projects',
-    organizations: 'organizations',
-    'org-settings': 'org-settings',
+  const [view, setViewState] = useState<View>(viewFromLocation)
+
+  // Push a history entry so the browser back/forward buttons move between pages.
+  const setView = (next: View) => {
+    setViewState(next)
+    const url = `${import.meta.env.BASE_URL}?view=${next}`
+    if (viewFromLocation() !== next) {
+      window.history.pushState({ view: next }, '', url)
+    }
   }
-  const initialView: View = (viewParam && VIEW_PARAM_MAP[viewParam]) || 'project-overview'
-  const [view, setView] = useState<View>(initialView)
+
+  // Sync state when the user navigates with the browser's back/forward buttons.
+  useEffect(() => {
+    const onPopState = () => setViewState(viewFromLocation())
+    window.addEventListener('popstate', onPopState)
+    return () => window.removeEventListener('popstate', onPopState)
+  }, [])
+
+  // Ensure the initial load has a matching history entry to return to.
+  useEffect(() => {
+    window.history.replaceState({ view }, '', `${import.meta.env.BASE_URL}?view=${view}`)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
   const [previousView, setPreviousView] = useState<View>('project-overview')
   const [clusterBuilderMode, setClusterBuilderMode] = useState<'create' | 'edit'>('edit')
 

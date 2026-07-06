@@ -351,7 +351,7 @@ export function CreateClusterPage({ onCancel, mode = "edit" }: CreateClusterPage
                 <div className="createClusterPage-legend">
                   <span className="createClusterPage-legendItem">
                     {/* @ts-ignore - React 19 polymorphic type mismatch */}
-                    <Icon glyph="Sparkle" fill={palette.black} size={12} /> Recommended region{" "}
+                    <Icon glyph="Favorite" fill={palette.black} size={12} /> Recommended region{" "}
                     {/* @ts-ignore - React 19 polymorphic type mismatch */}
                     <Icon glyph="InfoWithCircle" fill={palette.gray.base} size={12} />
                   </span>
@@ -385,7 +385,7 @@ export function CreateClusterPage({ onCancel, mode = "edit" }: CreateClusterPage
                             <span className="createClusterPage-regionCode">({r.code})</span>
                             {r.recommended && (
                               // @ts-ignore - React 19 polymorphic type mismatch
-                              <Icon glyph="Sparkle" fill={palette.black} size={12} />
+                              <Icon glyph="Favorite" fill={palette.black} size={12} />
                             )}
                           </button>
                         );
@@ -460,7 +460,7 @@ export function CreateClusterPage({ onCancel, mode = "edit" }: CreateClusterPage
                         state={readOnly}
                         onAdd={() => setReadOnly({ enabled: true, count: 2 })}
                         onCountChange={(d) => setReadOnly((s) => ({ ...s, count: Math.max(1, s.count + d) }))}
-                        onDelete={() => setDeleteTarget("readOnly")}
+                        onDelete={() => setReadOnly({ enabled: false, count: 0 })}
                         nodeType="readOnly"
                       />
                       <NodeRow
@@ -495,12 +495,16 @@ export function CreateClusterPage({ onCancel, mode = "edit" }: CreateClusterPage
                           label="Search"
                           onChangeNodes={(id, n) => setSearchRows((rows) => rows.map((r) => (r.id === id ? { ...r, nodes: n } : r)))}
                           onAdd={addSearchRow}
-                          onRemove={(id) =>
-                            setPendingRowDelete({
-                              target: "search",
-                              onConfirm: () => setSearchRows((rows) => rows.filter((r) => r.id !== id)),
-                            })
-                          }
+                          onRemove={() => {}}
+                          hideActions
+                          removeLink={{
+                            label: "- Remove Search Nodes",
+                            onClick: () =>
+                              setPendingRowDelete({
+                                target: "search",
+                                onConfirm: () => setSearchRows([]),
+                              }),
+                          }}
                           addLabel="+ Add Search Nodes"
                           total={searchRows.reduce((s, r) => s + r.nodes, 0)}
                           onTierLink={handleGoToSearchTier}

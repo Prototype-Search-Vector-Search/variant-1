@@ -642,23 +642,19 @@ export function CreateClusterPage({ onCancel, mode = "edit" }: CreateClusterPage
               return (
                 <>
                   {t && (
-                    <>
-                      <div className="createClusterPage-metaPrimary">
-                        {t.name} ({t.ram} RAM, {t.storage} Storage)
-                      </div>
-                      <div className="createClusterPage-metaSecondary">{t.vcpu}, Encrypted, Auto-expand Storage</div>
-                    </>
+                    <div className="createClusterPage-metaPrimary">
+                      {t.name} ({t.ram} RAM, {t.storage} Storage)
+                    </div>
                   )}
                   {st && (
-                    <>
-                      <div className="createClusterPage-metaPrimary createClusterPage-metaPrimary--search">
-                        {st.name} ({st.ram} RAM, {st.storage} Storage)
-                      </div>
-                      <div className="createClusterPage-metaSecondary">
-                        {st.vcpu}, {searchClass}, {searchNodeCount} Search Node{searchNodeCount === 1 ? "" : "s"}
-                      </div>
-                    </>
+                    <div className="createClusterPage-metaPrimary">
+                      {st.name} ({st.ram} RAM, {st.storage} Storage)
+                    </div>
                   )}
+                  <div className="createClusterPage-metaSecondary">
+                    {t ? `${t.vcpu}, Encrypted, Auto-expand Storage` : ""}
+                    {st ? ` · ${searchNodeCount} Search Node${searchNodeCount === 1 ? "" : "s"}` : ""}
+                  </div>
                 </>
               );
             })()}
